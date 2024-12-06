@@ -1,5 +1,6 @@
 package mastermind;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -11,18 +12,25 @@ public class Mastermind {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
-        Random random = new Random();
-        int[] secretCode = new int[CODE_LENGTH];
+        int[] secretCode = generateSecretCode(new int[CODE_LENGTH]);
 
-        System.out.println("Hello World!");
+        System.out.println(Arrays.toString(secretCode));
+
         System.out.println("Zgadnij 4-cyfrowy kod składający się z liczb od 1 do 6:");
 
         String input = scanner.nextLine();
 
-        for (int i = 0; i < CODE_LENGTH; i++) {
-            secretCode[i] = random.nextInt(MAX_DIGIT) + 1;
+        scanner.close();
+    }
+
+    private static int[] generateSecretCode(int[] code) {
+
+        Random random = new Random();
+
+        for (int i = 0; i < code.length; i++) {
+            code[i] = random.nextInt(Mastermind.MAX_DIGIT);
         }
 
-        scanner.close();
+        return code;
     }
 }
