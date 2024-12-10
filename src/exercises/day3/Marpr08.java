@@ -1,4 +1,4 @@
-package exercises.day_3;
+package exercises.day3;
 
 import java.util.Random;
 

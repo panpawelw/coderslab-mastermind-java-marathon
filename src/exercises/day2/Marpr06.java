@@ -1,4 +1,4 @@
-package exercises.day_2;
+package exercises.day2;
 
 public class Marpr06 {
     public static void main(String[] args) {
