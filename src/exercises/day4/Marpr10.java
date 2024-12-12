@@ -13,5 +13,6 @@ public class Marpr10 {
         } catch (NumberFormatException e) {
             System.out.println("To nie jest liczba!");
         }
+        scanner.close();
     }
 }

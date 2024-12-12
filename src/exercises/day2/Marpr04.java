@@ -8,5 +8,6 @@ public class Marpr04 {
         System.out.println("Podaj swoje imię:");
         String name = scanner.nextLine();
         System.out.println("Cześć, " + name + "!");
+        scanner.close();
     }
 }
