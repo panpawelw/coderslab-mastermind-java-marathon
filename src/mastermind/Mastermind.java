@@ -20,6 +20,8 @@ public class Mastermind {
 
         String input = scanner.nextLine();
 
+        int usersGuess = Integer.parseInt(input);
+
         scanner.close();
     }
 
