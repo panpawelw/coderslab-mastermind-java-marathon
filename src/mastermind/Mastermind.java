@@ -5,18 +5,19 @@ import java.util.Scanner;
 
 public class Mastermind {
 
-    public static final int CODE_LENGTH = 4;
+    public static final int CODE_LENGTH = 5;
     public static final int MAX_DIGIT = 6;
+    public static final int MAX_TRIES = 10;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int[] secretCode = generateSecretCode(new int[CODE_LENGTH]);
-        System.out.println("Zgadnij 4-cyfrowy kod składający się z cyfr od 1 do 6:");
+        System.out.println("Zgadnij " + CODE_LENGTH +"-cyfrowy kod składający się z cyfr od 1 do " + MAX_DIGIT + " :");
         String usersGuessString;
         int usersGuessInt = 0;
-        while (usersGuessInt < 1 || usersGuessInt > 6666) {
+        for (int i = 1; i <= MAX_TRIES; i++) {
             System.out.print(">");
-            usersGuessString = getFourCharString(scanner);
+            usersGuessString = getXCharString(scanner);
             try {
                 usersGuessInt = Integer.parseInt(usersGuessString);
             } catch (NumberFormatException e) {
@@ -36,15 +37,22 @@ public class Mastermind {
         return code;
     }
 
-    private static String getFourCharString(Scanner scanner) {
+    private static String getXCharString(Scanner scanner) {
         String fourCharString = "";
-        while (fourCharString.length() != 4) {
+        while (fourCharString.length() != CODE_LENGTH) {
             fourCharString = scanner.nextLine();
-            if (fourCharString.length() != 4) {
-                System.out.println("Kod musi mieć 4 cyfry!");
+            if (fourCharString.length() != CODE_LENGTH) {
+                System.out.print("Kod musi mieć " + CODE_LENGTH + " cyfr");
+                if (CODE_LENGTH < 5) {
+                    System.out.println("y!");
+                } else {
+                    System.out.println("!");
+                }
                 System.out.print(">");
             }
         }
         return fourCharString;
     }
+
+//    private static boolean
 }
