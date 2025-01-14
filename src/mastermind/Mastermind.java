@@ -12,12 +12,14 @@ public class Mastermind {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int[] secretCode = generateSecretCode(new int[CODE_LENGTH]);
-        System.out.println("Zgadnij " + CODE_LENGTH +"-cyfrowy kod składający się z cyfr od 1 do " + MAX_DIGIT + " :");
+        System.out.println("Zgadnij " + CODE_LENGTH +"-cyfrowy kod składający się z cyfr od 1 do " + MAX_DIGIT
+                + " lub wprowadź 'q' aby wyjść :");
         for (int i = 1; i <= MAX_TRIES; i++) {
             System.out.print("Próba " + i + " >");
             System.out.println("Podałeś kod: " + getUsersGuess(scanner, i));
         }
         scanner.close();
+        System.out.println("Do zobaczenia!");
     }
 
     private static int[] generateSecretCode(int[] code) {
@@ -48,6 +50,13 @@ public class Mastermind {
         String xCharString = "";
         while (xCharString.length() != CODE_LENGTH) {
             xCharString = scanner.nextLine();
+
+            if (xCharString.equals("q")) {
+                scanner.close();
+                System.out.println("Do zobaczenia!");
+                System.exit(0);
+            }
+
             if (xCharString.length() != CODE_LENGTH) {
                 System.out.print("Kod musi mieć " + CODE_LENGTH + " cyfr");
                 if (CODE_LENGTH < 5) {
