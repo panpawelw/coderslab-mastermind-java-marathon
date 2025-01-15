@@ -7,19 +7,18 @@ public class Mastermind {
 
     public static final int CODE_LENGTH = 4;
     public static final int MAX_DIGIT = 6;
-    public static final int MAX_TRIES = 10;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int[] secretCode = generateSecretCode(new int[CODE_LENGTH]);
         System.out.println("Zgadnij " + CODE_LENGTH +"-cyfrowy kod składający się z cyfr od 1 do " + MAX_DIGIT
                 + " lub wprowadź 'q' aby wyjść :");
-        for (int i = 1; i <= MAX_TRIES; i++) {
-            System.out.print("Próba " + i + " >");
-            System.out.println("Podałeś kod: " + getUsersGuess(scanner, i));
+        int counter = 0;
+        while(true) {
+            counter ++;
+            System.out.print("Próba " + counter + " >");
+            System.out.println("Podałeś kod: " + getUsersGuess(scanner, counter));
         }
-        scanner.close();
-        System.out.println("Do zobaczenia!");
     }
 
     private static int[] generateSecretCode(int[] code) {
