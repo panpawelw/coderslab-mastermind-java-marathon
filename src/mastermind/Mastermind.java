@@ -11,14 +11,21 @@ public class Mastermind {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int[] secretCode = generateSecretCode(new int[CODE_LENGTH]);
-        System.out.println("Zgadnij " + CODE_LENGTH +"-cyfrowy kod składający się z cyfr od 1 do " + MAX_DIGIT
-                + " lub wprowadź 'q' aby wyjść :");
-        int counter = 0;
+        long attemptCounter = 0;
+
         while(true) {
-            counter ++;
-            System.out.print("Próba " + counter + " >");
-            System.out.println("Podałeś kod: " + getUsersGuess(scanner, counter));
+            attemptCounter++;
+            System.out.print("Zgadnij " + CODE_LENGTH +"-cyfrowy kod składający się z cyfr od 1 do " + MAX_DIGIT
+                    + " lub wprowadź 'q' aby wyjść. Próba " + attemptCounter + " > ");
+            int attempt = getUsersGuess(scanner, attemptCounter);
+
+            if (attempt == 0) break;
+
+            System.out.println("Podałeś kod: " + attempt);
         }
+
+        scanner.close();
+        System.out.println("Do zobaczenia!");
     }
 
     private static int[] generateSecretCode(int[] code) {
@@ -29,41 +36,38 @@ public class Mastermind {
         return code;
     }
 
-    private static int getUsersGuess(Scanner scanner, int currentTry) {
-        String usersGuessString = getXCharString(scanner, currentTry);
+    private static int getUsersGuess(Scanner scanner, long attemptCounter) {
+        String usersGuessString = getXCharString(scanner, attemptCounter);
         int usersGuessInt = 0;
         while (!guessIsValid(usersGuessString)) {
-            System.out.println("To muszą być cyfry od 1 do " + MAX_DIGIT + "!");
-            System.out.print("Próba " + currentTry + " >");
-            usersGuessString = getXCharString(scanner, currentTry);
+
+            if (usersGuessString.equals("q")) return 0;
+
+            System.out.print("To muszą być cyfry od 1 do " + MAX_DIGIT + "! Próba " + attemptCounter + " > ");
+            usersGuessString = getXCharString(scanner, attemptCounter);
         }
         try {
             usersGuessInt = Integer.parseInt(usersGuessString);
         } catch (NumberFormatException e) {
-            System.out.println("To muszą być cyfry od 1 do " + MAX_DIGIT + "!");
+            System.out.print("To muszą być cyfry od 1 do " + MAX_DIGIT + "! Próba " + attemptCounter + " > ");
         }
         return usersGuessInt;
     }
 
-    private static String getXCharString(Scanner scanner, int currentTry) {
+    private static String getXCharString(Scanner scanner, long attemptCounter) {
         String xCharString = "";
         while (xCharString.length() != CODE_LENGTH) {
             xCharString = scanner.nextLine();
 
-            if (xCharString.equals("q")) {
-                scanner.close();
-                System.out.println("Do zobaczenia!");
-                System.exit(0);
-            }
+            if (xCharString.equals("q")) return "q";
 
             if (xCharString.length() != CODE_LENGTH) {
                 System.out.print("Kod musi mieć " + CODE_LENGTH + " cyfr");
                 if (CODE_LENGTH < 5) {
-                    System.out.println("y!");
+                    System.out.print("y! Próba " + attemptCounter + " > ");
                 } else {
-                    System.out.println("!");
+                    System.out.print("! Próba " + attemptCounter + " > ");
                 }
-                System.out.print("Próba " + currentTry + " >");
             }
         }
         return xCharString;
