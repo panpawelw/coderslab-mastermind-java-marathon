@@ -5,27 +5,28 @@ import java.util.Scanner;
 
 public class Mastermind {
 
-    public static final int CODE_LENGTH = 4;
+    public static final int CODE_LENGTH = 5;
     public static final int MAX_DIGIT = 6;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int[] secretCode = generateSecretCode(new int[CODE_LENGTH]);
         long attemptCounter = 0;
-
-        while(true) {
+        int attempt;
+        String finalLoopMessage;
+        do {
             attemptCounter++;
             System.out.print("Zgadnij " + CODE_LENGTH +"-cyfrowy kod składający się z cyfr od 1 do " + MAX_DIGIT
                     + " lub wprowadź 'q' aby wyjść. Próba " + attemptCounter + " > ");
-            int attempt = getUsersGuess(scanner, attemptCounter);
+            attempt = getUsersGuess(scanner, attemptCounter);
 
-            if (attempt == 0) break;
-
-            System.out.println("Podałeś kod: " + attempt);
-        }
+            finalLoopMessage = attempt != 0
+                    ? "Wpisałeś kod: " + attempt
+                    : "Do zobaczenia!";
+            System.out.println(finalLoopMessage);
+        } while (attempt != 0);
 
         scanner.close();
-        System.out.println("Do zobaczenia!");
     }
 
     private static int[] generateSecretCode(int[] code) {
@@ -62,15 +63,19 @@ public class Mastermind {
             if (xCharString.equals("q")) return "q";
 
             if (xCharString.length() != CODE_LENGTH) {
-                System.out.print("Kod musi mieć " + CODE_LENGTH + " cyfr");
-                if (CODE_LENGTH < 5) {
-                    System.out.print("y! Próba " + attemptCounter + " > ");
-                } else {
-                    System.out.print("! Próba " + attemptCounter + " > ");
-                }
+                System.out.print(formatMessage(attemptCounter));
             }
         }
         return xCharString;
+    }
+
+    @SuppressWarnings("DataFlowIssue")
+    private static String formatMessage(long attemptCounter) {
+        return switch (Mastermind.CODE_LENGTH) {
+            case 1 -> "Kod musi mieć " + CODE_LENGTH + " cyfrę! Próba " + attemptCounter + " > ";
+            case 2,3,4 -> "Kod musi mieć " + CODE_LENGTH + " cyfry! Próba " + attemptCounter + " > ";
+            default -> "Kod musi mieć " + CODE_LENGTH + " cyfr! Próba " + attemptCounter + " > ";
+        };
     }
 
     private static boolean guessIsValid(String guess) {
