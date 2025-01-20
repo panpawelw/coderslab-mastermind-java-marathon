@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Mastermind {
 
-    public static final int CODE_LENGTH = 5;
+    public static final int CODE_LENGTH = 4;
     public static final int MAX_DIGIT = 6;
 
     public static void main(String[] args) {
@@ -16,8 +16,8 @@ public class Mastermind {
         String finalLoopMessage;
         do {
             attemptCounter++;
-            System.out.print("Zgadnij " + CODE_LENGTH +"-cyfrowy kod składający się z cyfr od 1 do " + MAX_DIGIT
-                    + " lub wprowadź 'q' aby wyjść. Próba " + attemptCounter + " > ");
+            System.out.printf("Zgadnij %d-cyfrowy kod składający się z cyfr od 1 do %d lub wprowadź " +
+                    "'q' aby wyjść. Próba %d > ", CODE_LENGTH, MAX_DIGIT, attemptCounter);
             attempt = getUsersGuess(scanner, attemptCounter);
 
             finalLoopMessage = attempt != 0
@@ -44,13 +44,13 @@ public class Mastermind {
 
             if (usersGuessString.equals("q")) return 0;
 
-            System.out.print("To muszą być cyfry od 1 do " + MAX_DIGIT + "! Próba " + attemptCounter + " > ");
+            System.out.printf("To muszą być cyfry od 1 do %d! Próba %d > ", MAX_DIGIT, attemptCounter);
             usersGuessString = getXCharString(scanner, attemptCounter);
         }
         try {
             usersGuessInt = Integer.parseInt(usersGuessString);
         } catch (NumberFormatException e) {
-            System.out.print("To muszą być cyfry od 1 do " + MAX_DIGIT + "! Próba " + attemptCounter + " > ");
+            System.out.printf("To muszą być cyfry od 1 do %d! Próba %d > ", MAX_DIGIT, attemptCounter);
         }
         return usersGuessInt;
     }
@@ -72,9 +72,9 @@ public class Mastermind {
     @SuppressWarnings("DataFlowIssue")
     private static String formatMessage(long attemptCounter) {
         return switch (Mastermind.CODE_LENGTH) {
-            case 1 -> "Kod musi mieć " + CODE_LENGTH + " cyfrę! Próba " + attemptCounter + " > ";
-            case 2,3,4 -> "Kod musi mieć " + CODE_LENGTH + " cyfry! Próba " + attemptCounter + " > ";
-            default -> "Kod musi mieć " + CODE_LENGTH + " cyfr! Próba " + attemptCounter + " > ";
+            case 1 -> String.format("Kod musi mieć %d cyfrę! Próba %d > ", CODE_LENGTH, attemptCounter);
+            case 2,3,4 -> String.format("Kod musi mieć %d cyfry! Próba %d > ", CODE_LENGTH, attemptCounter);
+            default -> String.format("Kod musi mieć %d cyfr! Próba %d > ", CODE_LENGTH, attemptCounter);
         };
     }
 
