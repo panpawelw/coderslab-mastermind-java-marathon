@@ -77,12 +77,10 @@ public class Mastermind {
     }
 
     private static boolean attemptIsValid(String guess, int[] userGuess) {
-        char[] chars = guess.toCharArray();
-        for (int i = 0; i < chars.length; i++) {
-            if (chars[i] < '1' || chars[i] > ((char) MAX_DIGIT + '0')) {
+        for (int i = 0; i < guess.length(); i++) {
+            userGuess[i] = Character.getNumericValue(guess.charAt(i));
+            if (userGuess[i] < 1 || userGuess[i] > MAX_DIGIT) {
                 return false;
-            } else {
-                userGuess[i] = chars[i] - '0';
             }
         }
         return true;
