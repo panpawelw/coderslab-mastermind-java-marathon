@@ -12,7 +12,7 @@ public class Mastermind {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int[] secretCode = generateSecretCode(new int[CODE_LENGTH]);
-        int[] userGuess;
+        int[] attempt;
         long attemptCounter = 0;
         String mainLoopFinalMessage;
 
@@ -20,13 +20,13 @@ public class Mastermind {
             attemptCounter++;
             System.out.printf("Zgadnij %d-cyfrowy kod składający się z cyfr od 1 do %d lub wprowadź " +
                     "'q' aby wyjść. Próba %d > ", CODE_LENGTH, MAX_DIGIT, attemptCounter);
-            userGuess = getAttempt(scanner, attemptCounter);
+            attempt = getAttempt(scanner, attemptCounter);
 
-            mainLoopFinalMessage = userGuess[0] != 0
-                    ? "Wpisałeś kod: " + Arrays.toString(userGuess) + "\n"
+            mainLoopFinalMessage = attempt[0] != 0
+                    ? "Wpisałeś kod: " + Arrays.toString(attempt) + "\n"
                     : "Do zobaczenia!";
             System.out.println(mainLoopFinalMessage);
-        } while (userGuess[0] != 0);
+        } while (attempt[0] != 0);
 
         scanner.close();
     }
@@ -40,20 +40,28 @@ public class Mastermind {
     }
 
     private static int[] getAttempt(Scanner scanner, long attemptCounter) {
-        String inputString = getXCharString(scanner, attemptCounter);
-        int[]userGuess = new int[CODE_LENGTH];
-        while (!attemptIsValid(inputString, userGuess)) {
-            if (inputString.equals("q")) {
-                userGuess[0] = 0;
-                return userGuess;
+        int[] attempt = new int[CODE_LENGTH];
+        String inputString;
+        boolean again;
+        do {
+            again = false;
+            try {
+                inputString = getXCharString(scanner);
+                if (inputString.equals("q")) {
+                    attempt[0] = 0;
+                } else {
+                    convertAttempt(inputString, attempt);
+                }
+            } catch (IllegalArgumentException e) {
+                System.out.printf("To %s od 1 do %d! Próba %d > "
+                        , formatErrorMessage(), MAX_DIGIT, attemptCounter);
+                again = true;
             }
-            System.out.printf("To muszą być cyfry od 1 do %d! Próba %d > ", MAX_DIGIT, attemptCounter);
-            inputString = getXCharString(scanner, attemptCounter);
-        }
-        return userGuess;
+        } while(again);
+        return attempt;
     }
 
-    private static String getXCharString(Scanner scanner, long attemptCounter) {
+    private static String getXCharString(Scanner scanner) throws IllegalArgumentException{
         String xCharString = "";
         while (xCharString.length() != CODE_LENGTH) {
             xCharString = scanner.nextLine();
@@ -61,28 +69,27 @@ public class Mastermind {
             if (xCharString.equals("q")) return "q";
 
             if (xCharString.length() != CODE_LENGTH) {
-                System.out.print(formatLengthErrorMessage(attemptCounter));
+               throw new IllegalArgumentException();
             }
         }
         return xCharString;
     }
 
     @SuppressWarnings("DataFlowIssue")
-    private static String formatLengthErrorMessage(long attemptCounter) {
+    private static String formatErrorMessage() {
         return switch (Mastermind.CODE_LENGTH) {
-            case 1 -> String.format("Kod musi mieć %d cyfrę! Próba %d > ", CODE_LENGTH, attemptCounter);
-            case 2,3,4 -> String.format("Kod musi mieć %d cyfry! Próba %d > ", CODE_LENGTH, attemptCounter);
-            default -> String.format("Kod musi mieć %d cyfr! Próba %d > ", CODE_LENGTH, attemptCounter);
+            case 1 -> String.format("musi być %d cyfra", CODE_LENGTH);
+            case 2,3,4 -> String.format("muszą być %d cyfry", CODE_LENGTH);
+            default -> String.format("musi być %d cyfr", CODE_LENGTH);
         };
     }
 
-    private static boolean attemptIsValid(String guess, int[] userGuess) {
-        for (int i = 0; i < guess.length(); i++) {
-            userGuess[i] = Character.getNumericValue(guess.charAt(i));
-            if (userGuess[i] < 1 || userGuess[i] > MAX_DIGIT) {
-                return false;
+    private static void convertAttempt(String attemptString, int[] attemptArray) throws NumberFormatException{
+        for (int i = 0; i < attemptString.length(); i++) {
+            attemptArray[i] = Character.getNumericValue(attemptString.charAt(i));
+            if (attemptArray[i] < 1 || attemptArray[i] > MAX_DIGIT) {
+                throw new NumberFormatException();
             }
         }
-        return true;
     }
 }
