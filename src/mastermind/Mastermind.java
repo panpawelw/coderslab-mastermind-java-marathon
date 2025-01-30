@@ -42,37 +42,28 @@ public class Mastermind {
     private static int[] getAttempt(Scanner scanner, long attemptCounter) {
         int[] attempt = new int[CODE_LENGTH];
         String inputString;
-        boolean again;
         do {
-            again = false;
             try {
-                inputString = getXCharString(scanner);
+                inputString = scanner.nextLine();
+
                 if (inputString.equals("q")) {
                     attempt[0] = 0;
-                } else {
-                    convertAttempt(inputString, attempt);
+                    return attempt;
                 }
+
+                if (inputString.length() != CODE_LENGTH) throw new IllegalArgumentException();
+
+                for (int i = 0; i < inputString.length(); i++) {
+                    attempt[i] = Character.getNumericValue(inputString.charAt(i));
+
+                    if (attempt[i] < 1 || attempt[i] > MAX_DIGIT) throw new NumberFormatException();
+
+                }
+                return attempt;
             } catch (IllegalArgumentException e) {
-                System.out.printf("To %s od 1 do %d! Próba %d > "
-                        , formatErrorMessage(), MAX_DIGIT, attemptCounter);
-                again = true;
+                System.out.printf("To %s od 1 do %d! Próba %d > ", formatErrorMessage(), MAX_DIGIT, attemptCounter);
             }
-        } while(again);
-        return attempt;
-    }
-
-    private static String getXCharString(Scanner scanner) throws IllegalArgumentException{
-        String xCharString = "";
-        while (xCharString.length() != CODE_LENGTH) {
-            xCharString = scanner.nextLine();
-
-            if (xCharString.equals("q")) return "q";
-
-            if (xCharString.length() != CODE_LENGTH) {
-               throw new IllegalArgumentException();
-            }
-        }
-        return xCharString;
+        } while(true);
     }
 
     @SuppressWarnings("DataFlowIssue")
@@ -82,14 +73,5 @@ public class Mastermind {
             case 2,3,4 -> String.format("muszą być %d cyfry", CODE_LENGTH);
             default -> String.format("musi być %d cyfr", CODE_LENGTH);
         };
-    }
-
-    private static void convertAttempt(String attemptString, int[] attemptArray) throws NumberFormatException{
-        for (int i = 0; i < attemptString.length(); i++) {
-            attemptArray[i] = Character.getNumericValue(attemptString.charAt(i));
-            if (attemptArray[i] < 1 || attemptArray[i] > MAX_DIGIT) {
-                throw new NumberFormatException();
-            }
-        }
     }
 }
