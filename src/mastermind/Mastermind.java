@@ -10,24 +10,29 @@ public class Mastermind {
     public static final int MAX_DIGIT = 6;
 
     public static void main(String[] args) {
+        long attemptCounter = 1;
+        String newLoopMessage = "Zgadnij %d-cyfrowy kod składający się z cyfr od 1 do %d " +
+                "lub wprowadź 'q' aby wyjść. Próba %d > ";
+        String input;
         Scanner scanner = new Scanner(System.in);
         int[] secretCode = generateSecretCode(new int[CODE_LENGTH]);
         int[] attempt;
-        long attemptCounter = 0;
-        String mainLoopFinalMessage;
 
-        do {
-            attemptCounter++;
-            System.out.printf("Zgadnij %d-cyfrowy kod składający się z cyfr od 1 do %d lub wprowadź " +
-                    "'q' aby wyjść. Próba %d > ", CODE_LENGTH, MAX_DIGIT, attemptCounter);
-            attempt = getAttempt(scanner, attemptCounter);
+        System.out.printf(newLoopMessage, CODE_LENGTH, MAX_DIGIT, attemptCounter);
+        input = scanner.nextLine();
+        while (!input.equals("q")) {
+            try {
+                attempt = verifyInput(input);
+                System.out.println("Wpisałeś kod: " + Arrays.toString(attempt));
+                attemptCounter++;
+                System.out.printf(newLoopMessage, CODE_LENGTH, MAX_DIGIT, attemptCounter);
+            } catch (IllegalArgumentException e) {
+                System.out.printf("To %s od 1 do %d! Próba %d > ", formatErrorMessage(), MAX_DIGIT, attemptCounter);
+            }
+            input = scanner.nextLine();
+        }
 
-            mainLoopFinalMessage = attempt[0] != 0
-                    ? "Wpisałeś kod: " + Arrays.toString(attempt) + "\n"
-                    : "Do zobaczenia!";
-            System.out.println(mainLoopFinalMessage);
-        } while (attempt[0] != 0);
-
+        System.out.println("Do zobaczenia!");
         scanner.close();
     }
 
@@ -39,32 +44,18 @@ public class Mastermind {
         return code;
     }
 
-    private static int[] getAttempt(Scanner scanner, long attemptCounter) {
+    private static int[] verifyInput(String input) throws IllegalArgumentException {
         int[] attempt = new int[CODE_LENGTH];
-        String inputString;
-        do {
-            try {
-                inputString = scanner.nextLine();
+            if (input.length() != CODE_LENGTH) throw new IllegalArgumentException();
 
-                if (inputString.equals("q")) {
-                    attempt[0] = 0;
-                    return attempt;
-                }
+        for (int i = 0; i < input.length(); i++) {
+            attempt[i] = Character.getNumericValue(input.charAt(i));
 
-                if (inputString.length() != CODE_LENGTH) throw new IllegalArgumentException();
+            if (attempt[i] < 1 || attempt[i] > MAX_DIGIT) throw new NumberFormatException();
 
-                for (int i = 0; i < inputString.length(); i++) {
-                    attempt[i] = Character.getNumericValue(inputString.charAt(i));
-
-                    if (attempt[i] < 1 || attempt[i] > MAX_DIGIT) throw new NumberFormatException();
-
-                }
-                return attempt;
-            } catch (IllegalArgumentException e) {
-                System.out.printf("To %s od 1 do %d! Próba %d > ", formatErrorMessage(), MAX_DIGIT, attemptCounter);
-            }
-        } while(true);
-    }
+        }
+        return attempt;
+}
 
     @SuppressWarnings("DataFlowIssue")
     private static String formatErrorMessage() {
