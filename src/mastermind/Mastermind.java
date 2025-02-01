@@ -36,7 +36,7 @@ public class Mastermind {
         scanner.close();
     }
 
-    private static int[] generateSecretCode(int[] code) {
+    static int[] generateSecretCode(int[] code) {
         Random random = new Random();
         for (int i = 0; i < code.length; i++) {
             code[i] = random.nextInt(Mastermind.MAX_DIGIT);
