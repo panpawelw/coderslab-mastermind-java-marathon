@@ -24,6 +24,9 @@ public class Mastermind {
             try {
                 attempt = verifyInput(input);
                 System.out.println("Wpisałeś kod: " + Arrays.toString(attempt));
+                if (compareCodes(secretCode, attempt)) {
+                    System.out.println("Zgadłeś kod! Gratulacje!!!");
+                }
                 attemptCounter++;
                 System.out.printf(newLoopMessage, CODE_LENGTH, MAX_DIGIT, attemptCounter);
             } catch (IllegalArgumentException e) {
@@ -61,8 +64,12 @@ public class Mastermind {
     private static String formatErrorMessage() {
         return switch (Mastermind.CODE_LENGTH) {
             case 1 -> String.format("musi być %d cyfra", CODE_LENGTH);
-            case 2,3,4 -> String.format("muszą być %d cyfry", CODE_LENGTH);
+            case 2, 3, 4 -> String.format("musi być %d cyfry", CODE_LENGTH);
             default -> String.format("musi być %d cyfr", CODE_LENGTH);
         };
+    }
+
+    static boolean compareCodes(int[] secretCode, int[] attempt) {
+        return Arrays.equals(secretCode, attempt);
     }
 }
