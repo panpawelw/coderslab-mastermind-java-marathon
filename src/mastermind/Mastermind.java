@@ -42,7 +42,7 @@ public class Mastermind {
     static int[] generateSecretCode(int[] code) {
         Random random = new Random();
         for (int i = 0; i < code.length; i++) {
-            code[i] = random.nextInt(Mastermind.MAX_DIGIT);
+            code[i] = random.nextInt(Mastermind.MAX_DIGIT) + 1;
         }
         return code;
     }
