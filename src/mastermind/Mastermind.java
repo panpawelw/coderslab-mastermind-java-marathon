@@ -65,7 +65,7 @@ public class Mastermind {
     private static String formatErrorMessage() {
         return switch (Mastermind.CODE_LENGTH) {
             case 1 -> String.format("musi być %d cyfra", CODE_LENGTH);
-            case 2, 3, 4 -> String.format("musi być %d cyfry", CODE_LENGTH);
+            case 2, 3, 4 -> String.format("muszą być %d cyfry", CODE_LENGTH);
             default -> String.format("musi być %d cyfr", CODE_LENGTH);
         };
     }
