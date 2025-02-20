@@ -48,9 +48,10 @@ public class Mastermind {
     }
 
     private static int[] verifyInput(String input) throws IllegalArgumentException {
-        int[] attempt = new int[CODE_LENGTH];
-            if (input.length() != CODE_LENGTH) throw new IllegalArgumentException();
 
+        if (input.length() != CODE_LENGTH) throw new IllegalArgumentException();
+
+        int[] attempt = new int[CODE_LENGTH];
         for (int i = 0; i < input.length(); i++) {
             attempt[i] = Character.getNumericValue(input.charAt(i));
 
@@ -70,6 +71,7 @@ public class Mastermind {
     }
 
     static boolean compareCodes(int[] secretCode, int[] attempt) {
+        
         return Arrays.equals(secretCode, attempt);
     }
 }
