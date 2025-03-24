@@ -1,6 +1,5 @@
 package mastermind;
 
-import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -13,24 +12,23 @@ public class Mastermind {
         long attemptCounter = 1;
         String newLoopMessage = "Zgadnij %d-cyfrowy kod składający się z cyfr od 1 do %d " +
                 "lub wprowadź 'q' aby wyjść. Próba %d > ";
+        String resultMessage = "Cyfry we właściwym miejscu: %d %nCyfry w niewłaściwym miejscu: %d %n";
         String input;
         Scanner scanner = new Scanner(System.in);
         int[] secretCode = generateSecretCode(new int[CODE_LENGTH]);
         int[] attempt;
 
-        System.out.println(Arrays.toString(secretCode));
         System.out.printf(newLoopMessage, CODE_LENGTH, MAX_DIGIT, attemptCounter);
         input = scanner.nextLine();
         while (!input.equals("q")) {
             try {
                 attempt = verifyInput(input);
-                System.out.println("Wpisałeś kod: " + Arrays.toString(attempt));
                 Result result = compareCodes(attempt, secretCode);
                 if (result.inPlace == CODE_LENGTH) {
                     System.out.println("Zgadłeś kod! Gratulacje!!!");
                     break;
                 } else {
-                    System.out.println(result.inPlace + " , " + result.outOfPlace);
+                    System.out.printf(resultMessage, result.inPlace, result.outOfPlace);
                 }
                 attemptCounter++;
                 System.out.printf(newLoopMessage, CODE_LENGTH, MAX_DIGIT, attemptCounter);
@@ -77,7 +75,7 @@ public class Mastermind {
 
     static Result compareCodes(int[] secretCode, int[] attempt) {
         
-        return new Result(4, 0);
+        return new Result(3, 1);
     }
 }
 
@@ -85,5 +83,8 @@ class Result {
     int inPlace;
     int outOfPlace;
 
-    public Result(int inPlace, int outOfPlace) {}
+    public Result(int inPlace, int outOfPlace) {
+        this.inPlace = inPlace;
+        this.outOfPlace = outOfPlace;
+    }
 }
