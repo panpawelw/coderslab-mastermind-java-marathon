@@ -18,14 +18,19 @@ public class Mastermind {
         int[] secretCode = generateSecretCode(new int[CODE_LENGTH]);
         int[] attempt;
 
+        System.out.println(Arrays.toString(secretCode));
         System.out.printf(newLoopMessage, CODE_LENGTH, MAX_DIGIT, attemptCounter);
         input = scanner.nextLine();
         while (!input.equals("q")) {
             try {
                 attempt = verifyInput(input);
                 System.out.println("Wpisałeś kod: " + Arrays.toString(attempt));
-                if (compareCodes(secretCode, attempt)) {
+                Result result = compareCodes(attempt, secretCode);
+                if (result.inPlace == CODE_LENGTH) {
                     System.out.println("Zgadłeś kod! Gratulacje!!!");
+                    break;
+                } else {
+                    System.out.println(result.inPlace + " , " + result.outOfPlace);
                 }
                 attemptCounter++;
                 System.out.printf(newLoopMessage, CODE_LENGTH, MAX_DIGIT, attemptCounter);
@@ -70,8 +75,15 @@ public class Mastermind {
         };
     }
 
-    static boolean compareCodes(int[] secretCode, int[] attempt) {
+    static Result compareCodes(int[] secretCode, int[] attempt) {
         
-        return Arrays.equals(secretCode, attempt);
+        return new Result(4, 0);
     }
+}
+
+class Result {
+    int inPlace;
+    int outOfPlace;
+
+    public Result(int inPlace, int outOfPlace) {}
 }
