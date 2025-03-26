@@ -50,7 +50,7 @@ public class Mastermind {
         return code;
     }
 
-    private static int[] verifyInput(String input) throws IllegalArgumentException {
+    static int[] verifyInput(String input) throws IllegalArgumentException {
 
         if (input.length() != CODE_LENGTH) throw new IllegalArgumentException();
 
@@ -62,10 +62,10 @@ public class Mastermind {
 
         }
         return attempt;
-}
+    }
 
     @SuppressWarnings("DataFlowIssue")
-    private static String formatErrorMessage() {
+    static String formatErrorMessage() {
         return switch (Mastermind.CODE_LENGTH) {
             case 1 -> String.format("musi być %d cyfra", CODE_LENGTH);
             case 2, 3, 4 -> String.format("muszą być %d cyfry", CODE_LENGTH);
