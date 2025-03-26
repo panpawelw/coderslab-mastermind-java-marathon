@@ -74,17 +74,23 @@ public class Mastermind {
     }
 
     static Result compareCodes(int[] secretCode, int[] attempt) {
-        
-        return new Result(3, 1);
+        Result result = new Result(0, 0);
+        for (int i = 0; i < CODE_LENGTH; i++) {
+            if (secretCode[i] != attempt[i]) {
+                result.inPlace += 1;
+            }
+        }
+        return result;
     }
-}
 
-class Result {
-    int inPlace;
-    int outOfPlace;
+    static class Result {
+        int inPlace;
+        int outOfPlace;
 
-    public Result(int inPlace, int outOfPlace) {
-        this.inPlace = inPlace;
-        this.outOfPlace = outOfPlace;
+        public Result(int inPlace, int outOfPlace) {
+            this.inPlace = inPlace;
+            this.outOfPlace = outOfPlace;
+        }
     }
+
 }
