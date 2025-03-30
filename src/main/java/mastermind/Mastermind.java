@@ -23,7 +23,7 @@ public class Mastermind {
         while (!input.equals("q")) {
             try {
                 attempt = verifyInput(input);
-                Result result = compareCodes(attempt, secretCode);
+                Result result = compareCodes(secretCode, attempt);
                 if (result.inPlace == CODE_LENGTH) {
                     System.out.println("Zgadłeś kod! Gratulacje!!!");
                     break;
@@ -75,9 +75,24 @@ public class Mastermind {
 
     static Result compareCodes(int[] secretCode, int[] attempt) {
         Result result = new Result(0, 0);
+        boolean[] countedInSecretCode = new boolean[CODE_LENGTH];
+        boolean[] countedInAttempt = new boolean[CODE_LENGTH];
         for (int i = 0; i < CODE_LENGTH; i++) {
-            if (secretCode[i] != attempt[i]) {
-                result.inPlace += 1;
+            if (secretCode[i] == attempt[i]) {
+                result.inPlace++;
+                countedInSecretCode[i] = true;
+                countedInAttempt[i] = true;
+            }
+        }
+        for (int i = 0; i < CODE_LENGTH; i++) {
+            if (!countedInAttempt[i]) {
+                for (int j = 0; j < CODE_LENGTH; j++) {
+                    if (!countedInSecretCode[j] && attempt[i] == secretCode[j]) {
+                        result.outOfPlace++;
+                        countedInAttempt[i] = true;
+                        countedInSecretCode[j] = true;
+                    }
+                }
             }
         }
         return result;
