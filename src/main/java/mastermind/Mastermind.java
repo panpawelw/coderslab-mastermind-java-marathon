@@ -15,14 +15,14 @@ public class Mastermind {
         String resultMessage = "Cyfry we właściwym miejscu: %d %nCyfry w niewłaściwym miejscu: %d %n";
         String input;
         Scanner scanner = new Scanner(System.in);
-        int[] secretCode = generateSecretCode(new int[CODE_LENGTH]);
+        int[] secretCode = generateSecretCode(new int[CODE_LENGTH], MAX_DIGIT);
         int[] attempt;
 
         System.out.printf(newLoopMessage, CODE_LENGTH, MAX_DIGIT, attemptCounter);
         input = scanner.nextLine();
         while (!input.equals("q")) {
             try {
-                attempt = verifyInput(input);
+                attempt = verifyInput(input, CODE_LENGTH, MAX_DIGIT);
                 Result result = compareCodes(secretCode, attempt);
                 if (result.inPlace == CODE_LENGTH) {
                     System.out.println("Zgadłeś kod! Gratulacje!!!");
@@ -33,7 +33,8 @@ public class Mastermind {
                 attemptCounter++;
                 System.out.printf(newLoopMessage, CODE_LENGTH, MAX_DIGIT, attemptCounter);
             } catch (IllegalArgumentException e) {
-                System.out.printf("To %s od 1 do %d! Próba %d > ", formatErrorMessage(), MAX_DIGIT, attemptCounter);
+                System.out.printf("To %s od 1 do %d! Próba %d > ",
+                        formatErrorMessage(CODE_LENGTH), MAX_DIGIT, attemptCounter);
             }
             input = scanner.nextLine();
         }
@@ -42,51 +43,52 @@ public class Mastermind {
         scanner.close();
     }
 
-    static int[] generateSecretCode(int[] code) {
+    static int[] generateSecretCode(int[] code, int maxDigit) {
         Random random = new Random();
         for (int i = 0; i < code.length; i++) {
-            code[i] = random.nextInt(Mastermind.MAX_DIGIT) + 1;
+            code[i] = random.nextInt(maxDigit) + 1;
         }
         return code;
     }
 
-    static int[] verifyInput(String input) throws IllegalArgumentException {
+    static int[] verifyInput(String input, int codeLength, int maxDigit)
+            throws IllegalArgumentException {
 
-        if (input.length() != CODE_LENGTH) throw new IllegalArgumentException();
+        if (input.length() != codeLength) throw new IllegalArgumentException();
 
-        int[] attempt = new int[CODE_LENGTH];
+        int[] attempt = new int[codeLength];
         for (int i = 0; i < input.length(); i++) {
             attempt[i] = Character.getNumericValue(input.charAt(i));
 
-            if (attempt[i] < 1 || attempt[i] > MAX_DIGIT) throw new NumberFormatException();
+            if (attempt[i] < 1 || attempt[i] > maxDigit) throw new NumberFormatException();
 
         }
         return attempt;
     }
 
-    @SuppressWarnings("DataFlowIssue")
-    static String formatErrorMessage() {
-        return switch (Mastermind.CODE_LENGTH) {
-            case 1 -> String.format("musi być %d cyfra", CODE_LENGTH);
-            case 2, 3, 4 -> String.format("muszą być %d cyfry", CODE_LENGTH);
-            default -> String.format("musi być %d cyfr", CODE_LENGTH);
+    static String formatErrorMessage(int codeLength) {
+        return switch (codeLength) {
+            case 1 -> String.format("musi być %d cyfra", codeLength);
+            case 2, 3, 4 -> String.format("muszą być %d cyfry", codeLength);
+            default -> String.format("musi być %d cyfr", codeLength);
         };
     }
 
     static Result compareCodes(int[] secretCode, int[] attempt) {
         Result result = new Result(0, 0);
-        boolean[] countedInSecretCode = new boolean[CODE_LENGTH];
-        boolean[] countedInAttempt = new boolean[CODE_LENGTH];
-        for (int i = 0; i < CODE_LENGTH; i++) {
+        int codeLength = secretCode.length;
+        boolean[] countedInSecretCode = new boolean[codeLength];
+        boolean[] countedInAttempt = new boolean[codeLength];
+        for (int i = 0; i < codeLength; i++) {
             if (secretCode[i] == attempt[i]) {
                 result.inPlace++;
                 countedInSecretCode[i] = true;
                 countedInAttempt[i] = true;
             }
         }
-        for (int i = 0; i < CODE_LENGTH; i++) {
+        for (int i = 0; i < codeLength; i++) {
             if (!countedInAttempt[i]) {
-                for (int j = 0; j < CODE_LENGTH; j++) {
+                for (int j = 0; j < codeLength; j++) {
                     if (!countedInSecretCode[j] && attempt[i] == secretCode[j]) {
                         result.outOfPlace++;
                         countedInAttempt[i] = true;
