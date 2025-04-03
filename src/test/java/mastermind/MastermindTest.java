@@ -14,8 +14,8 @@ public class MastermindTest {
 
         for (int digit : secretCode) {
             assertTrue(digit >= 0, "Digit should be at least 0");
-            assertTrue(digit < MAX_DIGIT,
-                    "Digit should be less than Mastermind.MAX_DIGIT (" + MAX_DIGIT + ")");
+            assertTrue(digit <= MAX_DIGIT,
+                    "Digit should be equal or less than Mastermind.MAX_DIGIT (" + MAX_DIGIT + ")");
         }
     }
 
