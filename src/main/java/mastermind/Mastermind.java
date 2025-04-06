@@ -3,6 +3,11 @@ package mastermind;
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * This is mastermind.
+ *
+ * @author panpawelw
+ */
 public class Mastermind {
 
     public static final int CODE_LENGTH = 4;
@@ -43,6 +48,12 @@ public class Mastermind {
         scanner.close();
     }
 
+    /**
+     *
+     * @param code
+     * @param maxDigit
+     * @return
+     */
     static int[] generateSecretCode(int[] code, int maxDigit) {
         Random random = new Random();
         for (int i = 0; i < code.length; i++) {
@@ -51,6 +62,14 @@ public class Mastermind {
         return code;
     }
 
+    /**
+     *
+     * @param input
+     * @param codeLength
+     * @param maxDigit
+     * @return
+     * @throws IllegalArgumentException
+     */
     static int[] verifyInput(String input, int codeLength, int maxDigit)
             throws IllegalArgumentException {
 
@@ -66,6 +85,11 @@ public class Mastermind {
         return attempt;
     }
 
+    /**
+     *
+     * @param codeLength
+     * @return
+     */
     static String formatErrorMessage(int codeLength) {
         return switch (codeLength) {
             case 1 -> String.format("musi być %d cyfra", codeLength);
@@ -74,6 +98,12 @@ public class Mastermind {
         };
     }
 
+    /**
+     *
+     * @param secretCode
+     * @param attempt
+     * @return
+     */
     static Result compareCodes(int[] secretCode, int[] attempt) {
         Result result = new Result(0, 0);
         int codeLength = secretCode.length;
@@ -100,6 +130,9 @@ public class Mastermind {
         return result;
     }
 
+    /**
+     *
+     */
     static class Result {
         int inPlace;
         int outOfPlace;
