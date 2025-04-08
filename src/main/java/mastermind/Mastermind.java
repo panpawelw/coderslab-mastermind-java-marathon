@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 /**
- * This is mastermind.
+ * This is the mastermind game.
  *
  * @author panpawelw
  */
@@ -49,10 +49,11 @@ public class Mastermind {
     }
 
     /**
+     * Returns a secret code to be guessed later by the player.
      *
-     * @param code
-     * @param maxDigit
-     * @return
+     * @param code      an empty int[] array for the code, it's size determines the length of the code
+     * @param maxDigit  the maximum the single digit of the code can be
+     * @return          the int array containing the secret code
      */
     static int[] generateSecretCode(int[] code, int maxDigit) {
         Random random = new Random();
@@ -63,6 +64,7 @@ public class Mastermind {
     }
 
     /**
+     * Converts the input string into an int array checking for input length and maximum digit.
      *
      * @param input
      * @param codeLength
