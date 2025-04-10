@@ -4,7 +4,9 @@ import java.util.Random;
 import java.util.Scanner;
 
 /**
- * This is the mastermind game.
+ * This is the mastermind game. User has to guess a secret code that consists of 4 digits ranging from 1 to 6.
+ * These parameters can be adjusted by changing the constants CODE_LENGTH and MAX_DIGIT. In this particular
+ * implementation user had unlimited number of guesses.
  *
  * @author panpawelw
  */
@@ -51,9 +53,9 @@ public class Mastermind {
     /**
      * Returns a secret code to be guessed later by the player.
      *
-     * @param code      an empty int[] array for the code, it's size determines the length of the code
-     * @param maxDigit  the maximum the single digit of the code can be
-     * @return          the int array containing the secret code
+     * @param code      an empty int[] array for the code, it's size determines the length of the code.
+     * @param maxDigit  the maximum the single digit of the code can be.
+     * @return          the int array containing the secret code.
      */
     static int[] generateSecretCode(int[] code, int maxDigit) {
         Random random = new Random();
@@ -66,11 +68,13 @@ public class Mastermind {
     /**
      * Converts the input string into an int array checking for input length and maximum digit.
      *
-     * @param input
-     * @param codeLength
-     * @param maxDigit
-     * @return
-     * @throws IllegalArgumentException
+     * @param input         String containing user input.
+     * @param codeLength    length of the code user is trying to guess.
+     * @param maxDigit      the maximum the single digit of the code can be.
+     * @return              int array containing user's guess.
+     * @throws IllegalArgumentException when user's input doesn't match the length of the secret code or
+     *                                  specifically NumberFormatException when user enters anything else
+     *                                  than digits.
      */
     static int[] verifyInput(String input, int codeLength, int maxDigit)
             throws IllegalArgumentException {
@@ -88,9 +92,9 @@ public class Mastermind {
     }
 
     /**
-     *
-     * @param codeLength
-     * @return
+     * Formats a part of the error message in accordance with Polish grammar rules.
+     * @param codeLength    length of the secret code.
+     * @return              formatted part of the error message.
      */
     static String formatErrorMessage(int codeLength) {
         return switch (codeLength) {
@@ -101,10 +105,12 @@ public class Mastermind {
     }
 
     /**
+     * Compares user's guess to the secret code and returns information on how many correct digits were
+     * in the right position and how many digits were correct but in a wrong position.
      *
-     * @param secretCode
-     * @param attempt
-     * @return
+     * @param secretCode    the secret code user is trying to guess.
+     * @param attempt       user's guess.
+     * @return              Result object containing two int arrays.
      */
     static Result compareCodes(int[] secretCode, int[] attempt) {
         Result result = new Result(0, 0);
@@ -133,9 +139,11 @@ public class Mastermind {
     }
 
     /**
-     *
+     * Inner class used to return the result of compareCodes(). Contains two int arrays - how many digits
+     * were guessed correctly and in the right position and how many digits were guessed correctly but in
+     * the wrong position.
      */
-    static class Result {
+    private static class Result {
         int inPlace;
         int outOfPlace;
 
