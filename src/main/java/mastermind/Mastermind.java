@@ -5,8 +5,9 @@ import java.util.Scanner;
 
 /**
  * This is the mastermind game. User has to guess a secret code that consists of 4 digits ranging from 1 to 6.
- * These parameters can be adjusted by changing the constants CODE_LENGTH and MAX_DIGIT. In this particular
- * implementation user had unlimited number of guesses.
+ * These parameters can be adjusted by changing the constants CODE_LENGTH and MAX_DIGIT. The number of
+ * attempts can be set by changing the ATTEMPTS_LIMIT constant. When it's set to 0 the number of attempts is
+ * unlimited.
  *
  * @author panpawelw
  */
@@ -14,6 +15,7 @@ public class Mastermind {
 
     public static final int CODE_LENGTH = 4;
     public static final int MAX_DIGIT = 6;
+    public static final int ATTEMPTS_LIMIT = 10;
 
     public static void main(String[] args) {
         long attemptCounter = 1;
@@ -27,7 +29,7 @@ public class Mastermind {
 
         System.out.printf(newLoopMessage, CODE_LENGTH, MAX_DIGIT, attemptCounter);
         input = scanner.nextLine();
-        while (!input.equals("q")) {
+        while (!input.equals("q") && ATTEMPTS_LIMIT - attemptCounter != 0) {
             try {
                 attempt = verifyInput(input, CODE_LENGTH, MAX_DIGIT);
                 Result result = compareCodes(secretCode, attempt);
