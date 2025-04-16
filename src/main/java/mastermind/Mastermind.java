@@ -13,37 +13,44 @@ import java.util.Scanner;
  */
 public class Mastermind {
 
+    public static final int ATTEMPTS_LIMIT = 0;
     public static final int CODE_LENGTH = 4;
     public static final int MAX_DIGIT = 6;
-    public static final int ATTEMPTS_LIMIT = 10;
 
     public static void main(String[] args) {
         long attemptCounter = 1;
+        int attemptsLimit = ATTEMPTS_LIMIT;
+        int codeLength = CODE_LENGTH;
+        int maxDigit = MAX_DIGIT;
+
         String newLoopMessage = "Zgadnij %d-cyfrowy kod składający się z cyfr od 1 do %d " +
                 "lub wprowadź 'q' aby wyjść. Próba %d > ";
         String resultMessage = "Cyfry we właściwym miejscu: %d %nCyfry w niewłaściwym miejscu: %d %n";
         String input;
         Scanner scanner = new Scanner(System.in);
-        int[] secretCode = generateSecretCode(new int[CODE_LENGTH], MAX_DIGIT);
+        int[] secretCode = generateSecretCode(new int[codeLength], maxDigit);
         int[] attempt;
 
-        System.out.printf(newLoopMessage, CODE_LENGTH, MAX_DIGIT, attemptCounter);
+        System.out.printf("Obecne parametry to: ilość prób - %s, długość kodu - %d, maksimum - %d %n" +
+                "Czy chcesz zmienić te parametry? (t/n):", attemptsLimit, codeLength, maxDigit);
+        System.out.println();
+        System.out.printf(newLoopMessage, codeLength, maxDigit, attemptCounter);
         input = scanner.nextLine();
-        while (!input.equals("q") && ATTEMPTS_LIMIT - attemptCounter != 0) {
+        while (!input.equals("q") && attemptsLimit - attemptCounter != 0) {
             try {
-                attempt = verifyInput(input, CODE_LENGTH, MAX_DIGIT);
+                attempt = verifyInput(input, codeLength, maxDigit);
                 Result result = compareCodes(secretCode, attempt);
-                if (result.inPlace == CODE_LENGTH) {
+                if (result.inPlace == codeLength) {
                     System.out.println("Zgadłeś kod! Gratulacje!!!");
                     break;
                 } else {
                     System.out.printf(resultMessage, result.inPlace, result.outOfPlace);
                 }
                 attemptCounter++;
-                System.out.printf(newLoopMessage, CODE_LENGTH, MAX_DIGIT, attemptCounter);
+                System.out.printf(newLoopMessage, codeLength, maxDigit, attemptCounter);
             } catch (IllegalArgumentException e) {
                 System.out.printf("To %s od 1 do %d! Próba %d > ",
-                        formatErrorMessage(CODE_LENGTH), MAX_DIGIT, attemptCounter);
+                        formatErrorMessage(codeLength), maxDigit, attemptCounter);
             }
             input = scanner.nextLine();
         }
