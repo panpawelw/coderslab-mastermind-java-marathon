@@ -5,9 +5,8 @@ import java.util.Scanner;
 
 /**
  * This is the mastermind game. User has to guess a secret code that consists of 4 digits ranging from 1 to 6.
- * These parameters can be adjusted by changing the constants CODE_LENGTH and MAX_DIGIT. The number of
- * attempts can be set by changing the ATTEMPTS_LIMIT constant. When it's set to 0 the number of attempts is
- * unlimited.
+ * These parameters can be adjusted by changing the constants CODE_LENGTH and MAX_DIGIT. The number of attempts can be
+ * set by changing the ATTEMPTS_LIMIT constant. When it's set to 0 the number of attempts is unlimited.
  *
  * @author panpawelw
  */
@@ -23,6 +22,7 @@ public class Mastermind {
         int codeLength = CODE_LENGTH;
         int maxDigit = MAX_DIGIT;
 
+        String parametersMessage = "Obecne parametry to: ilość prób - %s, długość kodu - %d, maksymalna cyfra - %d.";
         String newLoopMessage = "Zgadnij %d-cyfrowy kod składający się z cyfr od 1 do %d " +
                 "lub wprowadź 'q' aby wyjść. Próba %d > ";
         String resultMessage = "Cyfry we właściwym miejscu: %d %nCyfry w niewłaściwym miejscu: %d %n";
@@ -31,8 +31,12 @@ public class Mastermind {
         int[] secretCode = generateSecretCode(new int[codeLength], maxDigit);
         int[] attempt;
 
-        System.out.printf("Obecne parametry to: ilość prób - %s, długość kodu - %d, maksimum - %d %n" +
-                "Czy chcesz zmienić te parametry? (t/n):", attemptsLimit, codeLength, maxDigit);
+        System.out.printf(parametersMessage + " Wpisz (t) aby je zmienić: ",
+                attemptsLimit == 0 ? "bez ograniczeń" : attemptsLimit, codeLength, maxDigit);
+        char answer = scanner.next().charAt(0);
+        if (answer == 't') {
+            changeParameters(scanner, attemptsLimit,  codeLength, maxDigit);
+        }
         System.out.println();
         System.out.printf(newLoopMessage, codeLength, maxDigit, attemptCounter);
         input = scanner.nextLine();
@@ -62,9 +66,9 @@ public class Mastermind {
     /**
      * Returns a secret code to be guessed later by the player.
      *
-     * @param code      an empty int[] array for the code, it's size determines the length of the code.
-     * @param maxDigit  the maximum the single digit of the code can be.
-     * @return          the int array containing the secret code.
+     * @param code     an empty int[] array for the code, it's size determines the length of the code.
+     * @param maxDigit the maximum the single digit of the code can be.
+     * @return the int array containing the secret code.
      */
     static int[] generateSecretCode(int[] code, int maxDigit) {
         Random random = new Random();
@@ -77,13 +81,12 @@ public class Mastermind {
     /**
      * Converts the input string into an int array checking for input length and maximum digit.
      *
-     * @param input         String containing user input.
-     * @param codeLength    length of the code user is trying to guess.
-     * @param maxDigit      the maximum the single digit of the code can be.
-     * @return              int array containing user's guess.
-     * @throws IllegalArgumentException when user's input doesn't match the length of the secret code or
-     *                                  specifically NumberFormatException when user enters anything else
-     *                                  than digits.
+     * @param input      String containing user input.
+     * @param codeLength length of the code user is trying to guess.
+     * @param maxDigit   the maximum the single digit of the code can be.
+     * @return int array containing user's guess.
+     * @throws IllegalArgumentException when user's input doesn't match the length of the secret code or specifically
+     *                                  NumberFormatException when user enters anything else than digits.
      */
     static int[] verifyInput(String input, int codeLength, int maxDigit)
             throws IllegalArgumentException {
@@ -102,8 +105,9 @@ public class Mastermind {
 
     /**
      * Formats a part of the error message in accordance with Polish grammar rules.
-     * @param codeLength    length of the secret code.
-     * @return              formatted part of the error message.
+     *
+     * @param codeLength length of the secret code.
+     * @return formatted part of the error message.
      */
     static String formatErrorMessage(int codeLength) {
         return switch (codeLength) {
@@ -113,13 +117,17 @@ public class Mastermind {
         };
     }
 
+    static void changeParameters(Scanner scanner, int attemptsLimit, int codeLength, int maxDigit) {
+        System.out.println("Zmiana parametrów");
+    }
+
     /**
-     * Compares user's guess to the secret code and returns information on how many correct digits were
-     * in the right position and how many digits were correct but in a wrong position.
+     * Compares user's guess to the secret code and returns information on how many correct digits were in the right
+     * position and how many digits were correct but in a wrong position.
      *
-     * @param secretCode    the secret code user is trying to guess.
-     * @param attempt       user's guess.
-     * @return              Result object containing two int arrays.
+     * @param secretCode the secret code user is trying to guess.
+     * @param attempt    user's guess.
+     * @return Result object containing two int arrays.
      */
     static Result compareCodes(int[] secretCode, int[] attempt) {
         Result result = new Result(0, 0);
@@ -148,9 +156,8 @@ public class Mastermind {
     }
 
     /**
-     * Inner class used to return the result of compareCodes(). Contains two int arrays - how many digits
-     * were guessed correctly and in the right position and how many digits were guessed correctly but in
-     * the wrong position.
+     * Inner class used to return the result of compareCodes(). Contains two int arrays - how many digits were guessed
+     * correctly and in the right position and how many digits were guessed correctly but in the wrong position.
      */
     private static class Result {
         int inPlace;
@@ -161,5 +168,4 @@ public class Mastermind {
             this.outOfPlace = outOfPlace;
         }
     }
-
 }
