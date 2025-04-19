@@ -22,7 +22,7 @@ public class Mastermind {
         int codeLength = CODE_LENGTH;
         int maxDigit = MAX_DIGIT;
 
-        String parametersMessage = "Obecne parametry to: ilość prób - %s, długość kodu - %d, maksymalna cyfra - %d.";
+        String parametersMessage = "Obecne parametry to: ilość prób: %s, długość kodu: %d, maksymalna cyfra: %d.";
         String newLoopMessage = "Zgadnij %d-cyfrowy kod składający się z cyfr od 1 do %d " +
                 "lub wprowadź 'q' aby wyjść. Próba %d > ";
         String resultMessage = "Cyfry we właściwym miejscu: %d %nCyfry w niewłaściwym miejscu: %d %n";
@@ -35,8 +35,10 @@ public class Mastermind {
                 attemptsLimit == 0 ? "bez ograniczeń" : attemptsLimit, codeLength, maxDigit);
         char answer = scanner.next().charAt(0);
         if (answer == 't') {
-            changeParameters(scanner, attemptsLimit,  codeLength, maxDigit);
+            System.out.printf(parametersMessage, attemptsLimit == 0 ? "bez ograniczeń" : attemptsLimit,
+                    codeLength, maxDigit);
         }
+
         System.out.println();
         System.out.printf(newLoopMessage, codeLength, maxDigit, attemptCounter);
         input = scanner.nextLine();
@@ -117,8 +119,15 @@ public class Mastermind {
         };
     }
 
-    static void changeParameters(Scanner scanner, int attemptsLimit, int codeLength, int maxDigit) {
-        System.out.println("Zmiana parametrów");
+    static int getInt(Scanner scanner, String message, int minimum, int maximum) {
+        int result = -2147483648;
+        System.out.print(message);
+        while (result < minimum || result > maximum) {
+            while (!scanner.hasNextInt()) scanner.next();
+            result = scanner.nextInt();
+            scanner.nextLine();
+        }
+       return result;
     }
 
     /**
