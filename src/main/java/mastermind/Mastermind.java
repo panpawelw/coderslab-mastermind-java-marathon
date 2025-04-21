@@ -35,6 +35,10 @@ public class Mastermind {
                 attemptsLimit == 0 ? "bez ograniczeń" : attemptsLimit, codeLength, maxDigit);
         char answer = scanner.next().charAt(0);
         if (answer == 't') {
+            attemptsLimit = getInt(scanner, "Podaj limit prób (0 - bez ograniczeń): "
+                    , 0, 2147483647);
+            codeLength = getInt(scanner, "Podaj długość kodu (1-9): ", 1, 9);
+            maxDigit = getInt(scanner, "Podaj maksymalną cyfrę (1-9): ", 1, 9);
             System.out.printf(parametersMessage, attemptsLimit == 0 ? "bez ograniczeń" : attemptsLimit,
                     codeLength, maxDigit);
         }
