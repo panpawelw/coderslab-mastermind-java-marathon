@@ -123,6 +123,16 @@ public class Mastermind {
         };
     }
 
+    /**
+     * Displays a prompt and gets an integer within range between minium and maximum from console.
+     * Input is repeated until the integer is within range.
+     *
+     * @param scanner   Scanner object.
+     * @param message   The message to be displayed.
+     * @param minimum   minimum.
+     * @param maximum   maximum.
+     * @return  the integer.
+     */
     static int getInt(Scanner scanner, String message, int minimum, int maximum) {
         int result = -2147483648;
         System.out.print(message);
