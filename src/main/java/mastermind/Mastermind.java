@@ -31,7 +31,7 @@ public class Mastermind {
         int[] secretCode = generateSecretCode(new int[codeLength], maxDigit);
         int[] attempt;
 
-        System.out.printf(parametersMessage + " Wpisz (t) aby je zmienić: ",
+        System.out.printf(parametersMessage + " Wpisz 't' aby je zmienić: ",
                 attemptsLimit == 0 ? "bez ograniczeń" : attemptsLimit, codeLength, maxDigit);
         char answer = scanner.next().charAt(0);
         if (answer == 't') {
@@ -39,12 +39,11 @@ public class Mastermind {
                     , 0, 2147483647);
             codeLength = getInt(scanner, "Podaj długość kodu (1-9): ", 1, 9);
             maxDigit = getInt(scanner, "Podaj maksymalną cyfrę (1-9): ", 1, 9);
-            System.out.printf(parametersMessage, attemptsLimit == 0 ? "bez ograniczeń" : attemptsLimit,
+            System.out.printf(parametersMessage + "%n", attemptsLimit == 0 ? "bez ograniczeń" : attemptsLimit,
                     codeLength, maxDigit);
         }
 
-        System.out.println();
-        System.out.printf(newLoopMessage, codeLength, maxDigit, attemptCounter);
+        System.out.printf("%n" + newLoopMessage, codeLength, maxDigit, attemptCounter);
         input = scanner.nextLine();
         while (!input.equals("q") && attemptsLimit - attemptCounter != 0) {
             try {
@@ -150,16 +149,17 @@ public class Mastermind {
      *
      * @param secretCode the secret code user is trying to guess.
      * @param attempt    user's guess.
-     * @return Result object containing two int arrays.
+     * @return Result record containing two integers.
      */
     static Result compareCodes(int[] secretCode, int[] attempt) {
-        Result result = new Result(0, 0);
         int codeLength = secretCode.length;
+        int inPlace = 0;
+        int outOfPlace = 0;
         boolean[] countedInSecretCode = new boolean[codeLength];
         boolean[] countedInAttempt = new boolean[codeLength];
         for (int i = 0; i < codeLength; i++) {
             if (secretCode[i] == attempt[i]) {
-                result.inPlace++;
+                inPlace++;
                 countedInSecretCode[i] = true;
                 countedInAttempt[i] = true;
             }
@@ -168,27 +168,19 @@ public class Mastermind {
             if (!countedInAttempt[i]) {
                 for (int j = 0; j < codeLength; j++) {
                     if (!countedInSecretCode[j] && attempt[i] == secretCode[j]) {
-                        result.outOfPlace++;
+                        outOfPlace++;
                         countedInAttempt[i] = true;
                         countedInSecretCode[j] = true;
                     }
                 }
             }
         }
-        return result;
+        return new Result(inPlace, outOfPlace);
     }
 
     /**
-     * Inner class used to return the result of compareCodes(). Contains two int arrays - how many digits were guessed
+     * A record used to return the result of compareCodes(). Contains two integers - how many digits were guessed
      * correctly and in the right position and how many digits were guessed correctly but in the wrong position.
      */
-    private static class Result {
-        int inPlace;
-        int outOfPlace;
-
-        public Result(int inPlace, int outOfPlace) {
-            this.inPlace = inPlace;
-            this.outOfPlace = outOfPlace;
-        }
-    }
+    private record Result(int inPlace, int outOfPlace) {}
 }
