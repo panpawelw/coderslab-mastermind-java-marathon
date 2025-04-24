@@ -18,42 +18,31 @@ public class Mastermind {
 
     public static void main(String[] args) {
         long attemptCounter = 1;
-        int attemptsLimit = ATTEMPTS_LIMIT;
-        int codeLength = CODE_LENGTH;
-        int maxDigit = MAX_DIGIT;
-
-        String parametersMessage = "Obecne parametry to: ilość prób: %s, długość kodu: %d, maksymalna cyfra: %d.";
         String newLoopMessage = "Zgadnij %d-cyfrowy kod składający się z cyfr od 1 do %d " +
                 "lub wprowadź 'q' aby wyjść. Próba %d > ";
         String resultMessage = "Cyfry we właściwym miejscu: %d %nCyfry w niewłaściwym miejscu: %d %n";
         String input;
         Scanner scanner = new Scanner(System.in);
-        int[] secretCode = generateSecretCode(new int[codeLength], maxDigit);
         int[] attempt;
 
-        System.out.printf(parametersMessage + " Wpisz 't' aby je zmienić: ",
-                attemptsLimit == 0 ? "bez ograniczeń" : attemptsLimit, codeLength, maxDigit);
-        char answer = scanner.next().charAt(0);
-        if (answer == 't') {
-            attemptsLimit = getInt(scanner, "Podaj limit prób (0 - bez ograniczeń): "
-                    , 0, 2147483647);
-            codeLength = getInt(scanner, "Podaj długość kodu (1-9): ", 1, 9);
-            maxDigit = getInt(scanner, "Podaj maksymalną cyfrę (1-9): ", 1, 9);
-            System.out.printf(parametersMessage + "%n", attemptsLimit == 0 ? "bez ograniczeń" : attemptsLimit,
-                    codeLength, maxDigit);
-        }
+        GameParameters gameParameters = getGameParameters(scanner, ATTEMPTS_LIMIT, CODE_LENGTH, MAX_DIGIT);
+        int attemptsLimit = gameParameters.attemptsLimit;
+        int codeLength = gameParameters.codeLength;
+        int maxDigit = gameParameters.maxDigit;
+
+        int[] secretCode = generateSecretCode(new int[codeLength], maxDigit);
 
         System.out.printf("%n" + newLoopMessage, codeLength, maxDigit, attemptCounter);
         input = scanner.nextLine();
         while (!input.equals("q") && attemptsLimit - attemptCounter != 0) {
             try {
                 attempt = verifyInput(input, codeLength, maxDigit);
-                Result result = compareCodes(secretCode, attempt);
-                if (result.inPlace == codeLength) {
+                CodesComparison codesComparison = compareCodes(secretCode, attempt);
+                if (codesComparison.inPlace == codeLength) {
                     System.out.println("Zgadłeś kod! Gratulacje!!!");
                     break;
                 } else {
-                    System.out.printf(resultMessage, result.inPlace, result.outOfPlace);
+                    System.out.printf(resultMessage, codesComparison.inPlace, codesComparison.outOfPlace);
                 }
                 attemptCounter++;
                 System.out.printf(newLoopMessage, codeLength, maxDigit, attemptCounter);
@@ -69,11 +58,34 @@ public class Mastermind {
     }
 
     /**
+     *
+     * @param scanner
+     * @param attemptsLimit
+     * @param codeLength
+     * @param maxDigit
+     */
+    static GameParameters getGameParameters(Scanner scanner, int attemptsLimit, int codeLength, int maxDigit) {
+        final String parametersMessage = "Obecne parametry to: ilość prób: %s, długość kodu: %d, maksymalna cyfra: %d.";
+        System.out.printf(parametersMessage + " Wpisz 't' aby je zmienić: ",
+                attemptsLimit == 0 ? "bez ograniczeń" : attemptsLimit, codeLength, maxDigit);
+        char answer = scanner.next().charAt(0);
+        if (answer == 't') {
+            attemptsLimit = getInt(scanner, "Podaj limit prób (0 - bez ograniczeń): "
+                    , 0, 2147483647);
+            codeLength = getInt(scanner, "Podaj długość kodu (1-9): ", 1, 9);
+            maxDigit = getInt(scanner, "Podaj maksymalną cyfrę (1-9): ", 1, 9);
+        }
+        System.out.printf(parametersMessage + "%n", attemptsLimit == 0 ? "bez ograniczeń" : attemptsLimit,
+                codeLength, maxDigit);
+        return new GameParameters(attemptsLimit, codeLength, maxDigit);
+    }
+
+    /**
      * Returns a secret code to be guessed later by the player.
      *
-     * @param code     an empty int[] array for the code, it's size determines the length of the code.
-     * @param maxDigit the maximum the single digit of the code can be.
-     * @return the int array containing the secret code.
+     * @param code      an empty int[] array for the code, it's size determines the length of the code.
+     * @param maxDigit  the maximum the single digit of the code can be.
+     * @return          the int array containing the secret code.
      */
     static int[] generateSecretCode(int[] code, int maxDigit) {
         Random random = new Random();
@@ -86,10 +98,10 @@ public class Mastermind {
     /**
      * Converts the input string into an int array checking for input length and maximum digit.
      *
-     * @param input      String containing user input.
-     * @param codeLength length of the code user is trying to guess.
-     * @param maxDigit   the maximum the single digit of the code can be.
-     * @return int array containing user's guess.
+     * @param input         String containing user input.
+     * @param codeLength    length of the code user is trying to guess.
+     * @param maxDigit      the maximum the single digit of the code can be.
+     * @return              int array containing user's guess.
      * @throws IllegalArgumentException when user's input doesn't match the length of the secret code or specifically
      *                                  NumberFormatException when user enters anything else than digits.
      */
@@ -111,8 +123,8 @@ public class Mastermind {
     /**
      * Formats a part of the error message in accordance with Polish grammar rules.
      *
-     * @param codeLength length of the secret code.
-     * @return formatted part of the error message.
+     * @param codeLength    length of the secret code.
+     * @return              formatted part of the error message.
      */
     static String formatErrorMessage(int codeLength) {
         return switch (codeLength) {
@@ -130,7 +142,7 @@ public class Mastermind {
      * @param message   The message to be displayed.
      * @param minimum   minimum.
      * @param maximum   maximum.
-     * @return  the integer.
+     * @return          the integer from input.
      */
     static int getInt(Scanner scanner, String message, int minimum, int maximum) {
         int result = -2147483648;
@@ -147,11 +159,11 @@ public class Mastermind {
      * Compares user's guess to the secret code and returns information on how many correct digits were in the right
      * position and how many digits were correct but in a wrong position.
      *
-     * @param secretCode the secret code user is trying to guess.
-     * @param attempt    user's guess.
-     * @return Result record containing two integers.
+     * @param secretCode    the secret code user is trying to guess.
+     * @param attempt       user's guess.
+     * @return              CodesComparison record containing two integers.
      */
-    static Result compareCodes(int[] secretCode, int[] attempt) {
+    static CodesComparison compareCodes(int[] secretCode, int[] attempt) {
         int codeLength = secretCode.length;
         int inPlace = 0;
         int outOfPlace = 0;
@@ -175,12 +187,24 @@ public class Mastermind {
                 }
             }
         }
-        return new Result(inPlace, outOfPlace);
+        return new CodesComparison(inPlace, outOfPlace);
     }
 
     /**
-     * A record used to return the result of compareCodes(). Contains two integers - how many digits were guessed
-     * correctly and in the right position and how many digits were guessed correctly but in the wrong position.
+     * Record used to return the result of getGameParameters().
+     *
+     * @param attemptsLimit
+     * @param codeLength
+     * @param maxDigit
      */
-    private record Result(int inPlace, int outOfPlace) {}
+    private record GameParameters(int attemptsLimit, int codeLength, int maxDigit) {}
+
+    /**
+     * Record used to return the result of compareCodes(). Contains two integers - how many digits were guessed
+     * correctly and in the right position and how many digits were guessed correctly but in the wrong position.
+     *
+     * @param inPlace
+     * @param outOfPlace
+     */
+    private record CodesComparison(int inPlace, int outOfPlace) {}
 }
