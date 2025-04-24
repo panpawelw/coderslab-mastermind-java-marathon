@@ -58,11 +58,14 @@ public class Mastermind {
     }
 
     /**
+     * Checks whether user wants to stick with default game parameters or to change them. If the answer is yes it asks
+     * a series of questions and returns user's choices as GameParameters record.
      *
-     * @param scanner
-     * @param attemptsLimit
-     * @param codeLength
-     * @param maxDigit
+     * @param scanner       Scanner object
+     * @param attemptsLimit default attempts limit
+     * @param codeLength    default code length
+     * @param maxDigit      default maximum for the single digit in code
+     * @return              GameParameters record containing new game parameters
      */
     static GameParameters getGameParameters(Scanner scanner, int attemptsLimit, int codeLength, int maxDigit) {
         final String parametersMessage = "Obecne parametry to: ilość prób: %s, długość kodu: %d, maksymalna cyfra: %d.";
