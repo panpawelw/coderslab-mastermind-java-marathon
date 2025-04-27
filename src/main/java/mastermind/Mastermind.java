@@ -206,8 +206,8 @@ public class Mastermind {
      * Record used to return the result of compareCodes(). Contains two integers - how many digits were guessed
      * correctly and in the right position and how many digits were guessed correctly but in the wrong position.
      *
-     * @param inPlace
-     * @param outOfPlace
+     * @param inPlace       number of digits that are correct and in correct place.
+     * @param outOfPlace    number of digits that are correct and in incorrect place.
      */
     private record CodesComparison(int inPlace, int outOfPlace) {}
 }
