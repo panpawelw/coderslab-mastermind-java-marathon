@@ -196,9 +196,9 @@ public class Mastermind {
     /**
      * Record used to return the result of getGameParameters().
      *
-     * @param attemptsLimit
-     * @param codeLength
-     * @param maxDigit
+     * @param attemptsLimit limit to the number of user attempts at guessing (0 = unlimited).
+     * @param codeLength    secret code length.
+     * @param maxDigit      maximum for the single digit in the secret code.
      */
     private record GameParameters(int attemptsLimit, int codeLength, int maxDigit) {}
 
