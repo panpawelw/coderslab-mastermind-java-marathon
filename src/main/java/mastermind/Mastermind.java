@@ -68,18 +68,22 @@ public class Mastermind {
      * @return              GameParameters record containing new game parameters
      */
     static GameParameters getGameParameters(Scanner scanner, int attemptsLimit, int codeLength, int maxDigit) {
-        final String parametersMessage = "Obecne parametry to: ilość prób: %s, długość kodu: %d, maksymalna cyfra: %d.";
-        System.out.printf(parametersMessage + " Wpisz 't' aby je zmienić: ",
-                attemptsLimit == 0 ? "bez ograniczeń" : attemptsLimit, codeLength, maxDigit);
-        char answer = scanner.next().charAt(0);
-        if (answer == 't') {
-            attemptsLimit = getInt(scanner, "Podaj limit prób (0 - bez ograniczeń): "
-                    , 0, 2147483647);
-            codeLength = getInt(scanner, "Podaj długość kodu (1-9): ", 1, 9);
-            maxDigit = getInt(scanner, "Podaj maksymalną cyfrę (1-9): ", 1, 9);
+        final String parametersMessage = " parametry to: ilość prób - %s, długość kodu - %d, maksymalna cyfra - %d.";
+        System.out.printf("Obecne" + parametersMessage + "Wpisz 't' aby je zmienić, ENTER lub cokolwiek innego " +
+                        "aby pominąć: ", attemptsLimit == 0 ? "bez ograniczeń" : attemptsLimit, codeLength, maxDigit);
+        String answerString = scanner.nextLine();
+        if (!answerString.isEmpty()) {
+            char answerChar = answerString.charAt(0);
+            if (answerChar == 't') {
+                attemptsLimit = getInt(scanner, "Podaj limit prób (0 - bez ograniczeń): "
+                        , 0, 2147483647);
+                codeLength = getInt(scanner, "Podaj długość kodu (1-9): ", 1, 9);
+                maxDigit = getInt(scanner, "Podaj maksymalną cyfrę (1-9): ", 1, 9);
+            }
+            System.out.printf("Nowe" + parametersMessage + "%n", attemptsLimit == 0 ? "bez ograniczeń" : attemptsLimit,
+                    codeLength, maxDigit);
         }
-        System.out.printf(parametersMessage + "%n", attemptsLimit == 0 ? "bez ograniczeń" : attemptsLimit,
-                codeLength, maxDigit);
+
         return new GameParameters(attemptsLimit, codeLength, maxDigit);
     }
 
@@ -175,8 +179,8 @@ public class Mastermind {
         for (int i = 0; i < codeLength; i++) {
             if (secretCode[i] == attempt[i]) {
                 inPlace++;
-                countedInSecretCode[i] = true;
                 countedInAttempt[i] = true;
+                countedInSecretCode[i] = true;
             }
         }
         for (int i = 0; i < codeLength; i++) {
