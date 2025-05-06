@@ -6,7 +6,7 @@ import java.util.Scanner;
 /**
  * This is the mastermind game. User has to guess a secret code that consists of 4 digits ranging from 1 to 6.
  * These parameters can be adjusted by changing the constants CODE_LENGTH and MAX_DIGIT. The number of attempts can be
- * set by changing the ATTEMPTS_LIMIT constant. When it's set to 0 the number of attempts is unlimited.
+ * set by changing the ATTEMPTS_LIMIT constant. When it's set to 0, the number of attempts is unlimited.
  *
  * @author panpawelw
  */
@@ -58,18 +58,18 @@ public class Mastermind {
     }
 
     /**
-     * Checks whether user wants to stick with default game parameters or to change them. If the answer is yes it asks
+     * Checks whether user wants to stick with default game parameters or to change them. If the answer is yes, it asks
      * a series of questions and returns user's choices as GameParameters record.
      *
-     * @param scanner       Scanner object
-     * @param attemptsLimit default attempts limit
-     * @param codeLength    default code length
-     * @param maxDigit      default maximum for the single digit in code
-     * @return              GameParameters record containing new game parameters
+     * @param scanner       Scanner().
+     * @param attemptsLimit default attempts limit.
+     * @param codeLength    default code length.
+     * @param maxDigit      default maximum for the single digit in code.
+     * @return              GameParameters record containing new game parameters.
      */
     static GameParameters getGameParameters(Scanner scanner, int attemptsLimit, int codeLength, int maxDigit) {
         final String parametersMessage = " parametry to: ilość prób - %s, długość kodu - %d, maksymalna cyfra - %d.";
-        System.out.printf("Obecne" + parametersMessage + "Wpisz 't' aby je zmienić, ENTER lub cokolwiek innego " +
+        System.out.printf("Obecne" + parametersMessage + "%nWpisz 't' aby je zmienić, ENTER lub cokolwiek innego " +
                         "aby pominąć: ", attemptsLimit == 0 ? "bez ograniczeń" : attemptsLimit, codeLength, maxDigit);
         String answerString = scanner.nextLine();
         if (!answerString.isEmpty()) {
@@ -90,9 +90,9 @@ public class Mastermind {
     /**
      * Returns a secret code to be guessed later by the player.
      *
-     * @param code      an empty int[] array for the code, it's size determines the length of the code.
+     * @param code      empty int[] array for the code, it's size determines the length of the code.
      * @param maxDigit  the maximum the single digit of the code can be.
-     * @return          the int array containing the secret code.
+     * @return          int array containing the secret code.
      */
     static int[] generateSecretCode(int[] code, int maxDigit) {
         Random random = new Random();
@@ -106,7 +106,7 @@ public class Mastermind {
      * Converts the input string into an int array checking for input length and maximum digit.
      *
      * @param input         String containing user input.
-     * @param codeLength    length of the code user is trying to guess.
+     * @param codeLength    secret code length.
      * @param maxDigit      the maximum the single digit of the code can be.
      * @return              int array containing user's guess.
      * @throws IllegalArgumentException when user's input doesn't match the length of the secret code or specifically
@@ -130,7 +130,7 @@ public class Mastermind {
     /**
      * Formats a part of the error message in accordance with Polish grammar rules.
      *
-     * @param codeLength    length of the secret code.
+     * @param codeLength    secret code length.
      * @return              formatted part of the error message.
      */
     static String formatErrorMessage(int codeLength) {
@@ -145,14 +145,14 @@ public class Mastermind {
      * Displays a prompt and gets an integer within range between minium and maximum from console.
      * Input is repeated until the integer is within range.
      *
-     * @param scanner   Scanner object.
-     * @param message   The message to be displayed.
-     * @param minimum   minimum.
-     * @param maximum   maximum.
-     * @return          the integer from input.
+     * @param scanner   Scanner().
+     * @param message   the message to be displayed.
+     * @param minimum   the minimum.
+     * @param maximum   the maximum.
+     * @return          int from user's input.
      */
     static int getInt(Scanner scanner, String message, int minimum, int maximum) {
-        int result = -2147483648;
+        int result = Integer.MAX_VALUE;
         System.out.print(message);
         while (result < minimum || result > maximum) {
             while (!scanner.hasNextInt()) scanner.next();
@@ -164,7 +164,7 @@ public class Mastermind {
 
     /**
      * Compares user's guess to the secret code and returns information on how many correct digits were in the right
-     * position and how many digits were correct but in a wrong position.
+     * position and how many digits were correct but in the wrong position.
      *
      * @param secretCode    the secret code user is trying to guess.
      * @param attempt       user's guess.
@@ -215,3 +215,4 @@ public class Mastermind {
      */
     private record CodesComparison(int inPlace, int outOfPlace) {}
 }
+
