@@ -152,7 +152,7 @@ public class Mastermind {
      * @return          int from user's input.
      */
     static int getInt(Scanner scanner, String message, int minimum, int maximum) {
-        int result = Integer.MAX_VALUE;
+        int result = Integer.MIN_VALUE;
         System.out.print(message);
         while (result < minimum || result > maximum) {
             while (!scanner.hasNextInt()) scanner.next();
@@ -215,4 +215,3 @@ public class Mastermind {
      */
     private record CodesComparison(int inPlace, int outOfPlace) {}
 }
-
