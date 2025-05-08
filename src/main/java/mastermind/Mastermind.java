@@ -23,6 +23,7 @@ public class Mastermind {
         String resultMessage = "Cyfry we właściwym miejscu: %d %nCyfry w niewłaściwym miejscu: %d %n";
         String input;
         Scanner scanner = new Scanner(System.in);
+        scanner.useDelimiter("\r?\n");
         int[] attempt;
 
         GameParameters gameParameters = getGameParameters(scanner, ATTEMPTS_LIMIT, CODE_LENGTH, MAX_DIGIT);
@@ -155,9 +156,11 @@ public class Mastermind {
         int result = Integer.MIN_VALUE;
         System.out.print(message);
         while (result < minimum || result > maximum) {
-            while (!scanner.hasNextInt()) scanner.next();
-            result = scanner.nextInt();
-            scanner.nextLine();
+            try {
+                result = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.print(message);
+            }
         }
        return result;
     }
