@@ -2,8 +2,7 @@ package mastermind;
 import org.junit.jupiter.api.Test;
 
 import static mastermind.Mastermind.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MastermindTest {
 
@@ -17,6 +16,74 @@ public class MastermindTest {
             assertTrue(digit <= MAX_DIGIT,
                     "Digit should be equal or less than Mastermind.MAX_DIGIT (" + MAX_DIGIT + ")");
         }
+    }
+
+    @Test
+    void testVerifyInput_ValidInput() {
+        String input = "1234";
+        int codeLength = 4;
+        int maxDigit = 6;
+
+        int[] expected = {1, 2, 3, 4};
+        int[] result = verifyInput(input, codeLength, maxDigit);
+
+        assertArrayEquals(expected, result, "The converted array should match expected values.");
+    }
+
+    @Test
+    void testVerifyInput_InvalidLength_TooShort() {
+        String input = "123";
+        int codeLength = 4;
+        int maxDigit = 6;
+
+        assertThrows(IllegalArgumentException.class, () ->
+                        verifyInput(input, codeLength, maxDigit),
+                "Should throw IllegalArgumentException for short input length");
+    }
+
+    @Test
+    void testVerifyInput_InvalidLength_TooLong() {
+        String input = "12345";
+        int codeLength = 4;
+        int maxDigit = 6;
+
+        assertThrows(IllegalArgumentException.class, () ->
+                        verifyInput(input, codeLength, maxDigit),
+                "Should throw IllegalArgumentException for long input length");
+    }
+
+    @Test
+    void testVerifyInput_InvalidDigit_TooLow() {
+        String input = "0234";
+        int codeLength = 4;
+        int maxDigit = 6;
+
+        assertThrows(NumberFormatException.class, () ->
+                        verifyInput(input, codeLength, maxDigit),
+                "Should throw NumberFormatException for digit less than 1");
+    }
+
+    @Test
+    void testVerifyInput_InvalidDigit_TooHigh() {
+        String input = "1784";
+        int codeLength = 4;
+        int maxDigit = 6;
+
+        assertThrows(NumberFormatException.class, () ->
+                        verifyInput(input, codeLength, maxDigit),
+                "Should throw NumberFormatException for digit greater than maxDigit");
+    }
+
+    @Test
+    void testVerifyInput_EdgeDigits() {
+        String input = "16";
+        int codeLength = 2;
+        int maxDigit = 6;
+
+        int[] expected = {1, 6};
+        int[] result = verifyInput(input, codeLength, maxDigit);
+
+        assertArrayEquals(expected, result, "Should correctly parse edge digits 1 and maxDigit");
     }
 
     @Test
