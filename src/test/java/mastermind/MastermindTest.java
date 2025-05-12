@@ -106,4 +106,68 @@ public class MastermindTest {
 
         assertEquals("musi być 10 cyfr", Mastermind.formatErrorMessage(10));
     }
+
+    @Test
+    void testAllInPlace() {
+        int[] secret = {1, 2, 3, 4};
+        int[] attempt = {1, 2, 3, 4};
+        CodesComparison result = compareCodes(secret, attempt);
+        assertEquals(4, result.inPlace());
+        assertEquals(0, result.outOfPlace());
+        
+    }
+
+    @Test
+    void testAllOutOfPlace() {
+        int[] secret = {1, 2, 3, 4};
+        int[] attempt = {4, 3, 2, 1};
+        CodesComparison result = compareCodes(secret, attempt);
+        assertEquals(0, result.inPlace());
+        assertEquals(4, result.outOfPlace());
+    }
+
+    @Test
+    void testSomeInPlaceSomeOutOfPlace() {
+        int[] secret = {1, 2, 3, 4};
+        int[] attempt = {1, 3, 2, 4};
+        CodesComparison result = compareCodes(secret, attempt);
+        assertEquals(2, result.inPlace());   // positions 0 and 3
+        assertEquals(2, result.outOfPlace()); // 2 and 3 are swapped
+    }
+
+    @Test
+    void testNoMatches() {
+        int[] secret = {1, 2, 3, 4};
+        int[] attempt = {5, 6, 7, 8};
+        CodesComparison result = compareCodes(secret, attempt);
+        assertEquals(0, result.inPlace());
+        assertEquals(0, result.outOfPlace());
+    }
+
+    @Test
+    void testDuplicateDigits() {
+        int[] secret = {1, 2, 2, 3};
+        int[] attempt = {2, 2, 1, 3};
+        CodesComparison result = compareCodes(secret, attempt);
+        assertEquals(2, result.inPlace());   // 2 at position 1, 3 at position 3
+        assertEquals(2, result.outOfPlace()); // 1 and the other 2 are swapped
+    }
+
+    @Test
+    void testSingleElementMatch() {
+        int[] secret = {7};
+        int[] attempt = {7};
+        CodesComparison result = compareCodes(secret, attempt);
+        assertEquals(1, result.inPlace());
+        assertEquals(0, result.outOfPlace());
+    }
+
+    @Test
+    void testSingleElementMismatch() {
+        int[] secret = {7};
+        int[] attempt = {3};
+        CodesComparison result = compareCodes(secret, attempt);
+        assertEquals(0, result.inPlace());
+        assertEquals(0, result.outOfPlace());
+    }
 }
