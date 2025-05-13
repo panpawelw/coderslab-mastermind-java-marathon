@@ -12,9 +12,9 @@ import java.util.Scanner;
  */
 public class Mastermind {
 
-    public static final int ATTEMPTS_LIMIT = 0;
-    public static final int CODE_LENGTH = 4;
-    public static final int MAX_DIGIT = 6;
+    static final int ATTEMPTS_LIMIT = 0;
+    static final int CODE_LENGTH = 4;
+    static final int MAX_DIGIT = 6;
 
     public static void main(String[] args) {
         long attemptCounter = 1;
@@ -207,7 +207,7 @@ public class Mastermind {
      * @param codeLength    secret code length.
      * @param maxDigit      maximum for the single digit in the secret code.
      */
-    private record GameParameters(int attemptsLimit, int codeLength, int maxDigit) {}
+    record GameParameters(int attemptsLimit, int codeLength, int maxDigit) {}
 
     /**
      * Record used to return the result of compareCodes(). Contains two integers - how many digits were guessed
@@ -216,5 +216,5 @@ public class Mastermind {
      * @param inPlace       number of digits that are correct and in correct place.
      * @param outOfPlace    number of digits that are correct and in incorrect place.
      */
-    private record CodesComparison(int inPlace, int outOfPlace) {}
+    record CodesComparison(int inPlace, int outOfPlace) {}
 }
