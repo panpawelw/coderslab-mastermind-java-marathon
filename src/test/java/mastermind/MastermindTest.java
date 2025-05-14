@@ -19,7 +19,7 @@ public class MastermindTest {
     }
 
     @Test
-    void testVerifyInput_ValidInput() {
+    void testVerifyInputValidInput() {
         String input = "1234";
         int codeLength = 4;
         int maxDigit = 6;
@@ -31,7 +31,7 @@ public class MastermindTest {
     }
 
     @Test
-    void testVerifyInput_InvalidLength_TooShort() {
+    void testVerifyInputInvalidLengthTooShort() {
         String input = "123";
         int codeLength = 4;
         int maxDigit = 6;
@@ -42,7 +42,7 @@ public class MastermindTest {
     }
 
     @Test
-    void testVerifyInput_InvalidLength_TooLong() {
+    void testVerifyInputInvalidLengthTooLong() {
         String input = "12345";
         int codeLength = 4;
         int maxDigit = 6;
@@ -53,7 +53,7 @@ public class MastermindTest {
     }
 
     @Test
-    void testVerifyInput_InvalidDigit_TooLow() {
+    void testVerifyInputInvalidDigitTooLow() {
         String input = "0234";
         int codeLength = 4;
         int maxDigit = 6;
@@ -64,7 +64,7 @@ public class MastermindTest {
     }
 
     @Test
-    void testVerifyInput_InvalidDigit_TooHigh() {
+    void testVerifyInputInvalidDigitTooHigh() {
         String input = "1784";
         int codeLength = 4;
         int maxDigit = 6;
@@ -75,7 +75,7 @@ public class MastermindTest {
     }
 
     @Test
-    void testVerifyInput_EdgeDigits() {
+    void testVerifyInputEdgeDigits() {
         String input = "16";
         int codeLength = 2;
         int maxDigit = 6;
@@ -87,12 +87,12 @@ public class MastermindTest {
     }
 
     @Test
-    void testFormatErrorMessage_SingleDigit() {
+    void testFormatErrorMessageSingleDigit() {
         assertEquals("musi być 1 cyfra", Mastermind.formatErrorMessage(1));
     }
 
     @Test
-    void testFormatErrorMessage_MultipleDigits() {
+    void testFormatErrorMessageMultipleDigits() {
         assertEquals("muszą być 2 cyfry", Mastermind.formatErrorMessage(2));
 
         assertEquals("muszą być 3 cyfry", Mastermind.formatErrorMessage(3));
@@ -101,14 +101,14 @@ public class MastermindTest {
     }
 
     @Test
-    void testFormatErrorMessage_OtherCases() {
+    void testFormatErrorMessageOtherCases() {
         assertEquals("musi być 5 cyfr", Mastermind.formatErrorMessage(5));
 
         assertEquals("musi być 10 cyfr", Mastermind.formatErrorMessage(10));
     }
 
     @Test
-    void testAllInPlace() {
+    void testCompareCodesAllInPlace() {
         int[] secret = {1, 2, 3, 4};
         int[] attempt = {1, 2, 3, 4};
         CodesComparison result = compareCodes(secret, attempt);
@@ -118,7 +118,7 @@ public class MastermindTest {
     }
 
     @Test
-    void testAllOutOfPlace() {
+    void testCompareCodesAllOutOfPlace() {
         int[] secret = {1, 2, 3, 4};
         int[] attempt = {4, 3, 2, 1};
         CodesComparison result = compareCodes(secret, attempt);
@@ -127,7 +127,7 @@ public class MastermindTest {
     }
 
     @Test
-    void testSomeInPlaceSomeOutOfPlace() {
+    void testCompareCodesSomeInPlaceSomeOutOfPlace() {
         int[] secret = {1, 2, 3, 4};
         int[] attempt = {1, 3, 2, 4};
         CodesComparison result = compareCodes(secret, attempt);
@@ -136,7 +136,7 @@ public class MastermindTest {
     }
 
     @Test
-    void testNoMatches() {
+    void testCompareCodesNoMatches() {
         int[] secret = {1, 2, 3, 4};
         int[] attempt = {5, 6, 7, 8};
         CodesComparison result = compareCodes(secret, attempt);
@@ -145,7 +145,7 @@ public class MastermindTest {
     }
 
     @Test
-    void testDuplicateDigits() {
+    void testCompareCodesDuplicateDigits() {
         int[] secret = {1, 2, 2, 3};
         int[] attempt = {2, 2, 1, 3};
         CodesComparison result = compareCodes(secret, attempt);
@@ -154,7 +154,7 @@ public class MastermindTest {
     }
 
     @Test
-    void testSingleElementMatch() {
+    void testCompareCodesSingleElementMatch() {
         int[] secret = {7};
         int[] attempt = {7};
         CodesComparison result = compareCodes(secret, attempt);
@@ -163,7 +163,7 @@ public class MastermindTest {
     }
 
     @Test
-    void testSingleElementMismatch() {
+    void testCompareCodesSingleElementMismatch() {
         int[] secret = {7};
         int[] attempt = {3};
         CodesComparison result = compareCodes(secret, attempt);
