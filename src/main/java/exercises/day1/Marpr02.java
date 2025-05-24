@@ -1,8 +1,8 @@
 package exercises.day1;
 
 public class Marpr02 {
-    public static void main(String[] args) {
-        String name = "Paweł";
-        System.out.println("Witaj, " + name);
-    }
+  public static void main(String[] args) {
+    String name = "Paweł";
+    System.out.println("Witaj, " + name);
+  }
 }
